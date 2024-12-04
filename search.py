@@ -6,7 +6,7 @@ import gzip
 import re
 
 
-def have_page(word, type_word):
+def have_page(word, type_word, dir):
     url = 'https://dictionary.cambridge.org/es/diccionario/ingles/'
     missing_headers = {
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
@@ -59,18 +59,7 @@ def have_page(word, type_word):
         if type_extracted == None:
             continue
         if type_word in type_extracted.get_text():
-            quote = Extraction(content)
-            # quote.find_word()
-            print(quote.pronunciation_uk())
-            print(quote.pronunciation_us())
-            print(quote.mp3_uk())
-            print(quote.ogg_uk())
-            print(quote.mp3_us())
-            print(quote.ogg_us())
-            print(quote.image_big())
-            print(quote.image_small())
-            print('ok')
+            quote = Extraction(content, dir)
+            data = quote.list_data()
+            print(data)
             return
-
-
-have_page("cats", 'noun')
