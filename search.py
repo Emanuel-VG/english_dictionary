@@ -55,10 +55,10 @@ def have_page(word, type_word, dir):
     page = BeautifulSoup(text_data, 'html.parser')
     contents = page.find_all('div', {'class': 'pr entry-body__el'})
     for content in contents:
-        type_extracted = content.find('span', {'class': 'pos dpos'})
+        type_extracted = content.find_all('span', {'class': 'pos dpos'})
         if type_extracted == None:
             continue
-        if type_word in type_extracted.get_text():
+        if type_word in [i.get_text() for i in type_extracted]:
             quote = Extraction(content, dir, word_url_alt)
             quote.create_data()
             return

@@ -4,9 +4,9 @@ import pathlib
 
 principal_folder = 'data'
 folder_name = 'topics'
-category = 'noun'
-file_name = 'weather_conditions.csv'
-dir = 'data/noun/weather_conditions'
+category = 'noun'                       # varia
+file_name = 'weather_conditions.csv'    # varia
+dir = 'data/noun/weather_conditions'    # varia
 
 
 def send_attributes():
@@ -34,8 +34,10 @@ def create_folders():
 
 
 def scraping_words(words_list, category, dir):
-    time.sleep(1)
+    print('-----------------------------' +
+          dir+'-------------------------------')
     for word in words_list:
+        time.sleep(0.5)
         search.have_page(word, category, dir)
 
 

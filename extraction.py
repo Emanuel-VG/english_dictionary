@@ -1,5 +1,6 @@
 import urllib.request
 import csv
+import time
 
 
 class Extraction:
@@ -22,6 +23,7 @@ class Extraction:
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
         }
         try:
+            time.sleep(0.5)
             request = urllib.request.Request(url, headers=headers or {})
             with urllib.request.urlopen(request) as response, open(save_path, 'wb') as file:
                 file_size = response.getheader('Content-Length')
@@ -66,7 +68,7 @@ class Extraction:
                 'span', {'class': 'uk dpron-i'}).find('source', {'type': 'audio/mpeg'})['src']
             path = self.dir+'/mp3_uk/'+self.word+'.mp3'
             self.download_file(self.url_principal+link_sound, path)
-            return path
+            return 'mp3_uk/'+self.word+'.mp3'
         except:
             return None
 
