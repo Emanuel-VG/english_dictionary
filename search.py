@@ -33,9 +33,9 @@ def have_page(word, type_word, dir):
         print(inst)
         print('Other Error')
         return
-    word_url = (parse.urlparse(html.geturl()).path).replace(
+    word_url_alt = (parse.urlparse(html.geturl()).path).replace(
         '/es/diccionario/ingles/', '')
-    word_url = (re.sub(r'[^a-zA-Z]', '', word_url)).lower()
+    word_url = (re.sub(r'[^a-zA-Z]', '', word_url_alt)).lower()
     if word_url != re.sub(r'[^a-z]', '', word):
         print(word+": Not Found")
         return
@@ -59,7 +59,6 @@ def have_page(word, type_word, dir):
         if type_extracted == None:
             continue
         if type_word in type_extracted.get_text():
-            quote = Extraction(content, dir)
-            data = quote.list_data()
-            print(data)
+            quote = Extraction(content, dir, word_url_alt)
+            quote.create_data()
             return

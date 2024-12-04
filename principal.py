@@ -1,12 +1,12 @@
-import csv
 import time
 import search
 import pathlib
 
-principal_folder = 'data/'
+principal_folder = 'data'
 folder_name = 'topics'
 category = 'noun'
-file_name = 'weather conditions.csv'
+file_name = 'weather_conditions.csv'
+dir = 'data/noun/weather_conditions'
 
 
 def send_attributes():
@@ -26,15 +26,19 @@ def list_words_from_file(folder_name, category, file_name,):
 
 
 def create_folders():
-    p = pathlib.Path((principal_folder+file_name).replace('.csv'))
-    p.mkdir(parents=True, exist_ok=True)
+    dirs = [dir, dir+'/mp3_uk', dir+'/ogg_uk', dir+'/mp3_us',
+            dir+'/ogg_us', dir+'/image_big', dir+'/image_small']
+    for i in dirs:
+        dir_create = pathlib.Path(i)
+        dir_create.mkdir(parents=True, exist_ok=True)
 
 
-def scraping_words(words_list, category):
+def scraping_words(words_list, category, dir):
     time.sleep(1)
     for word in words_list:
-        search.have_page(word, category)
+        search.have_page(word, category, dir)
 
 
 words = list_words_from_file(folder_name, category, file_name)
-scraping_words(words, category)
+create_folders()
+scraping_words(words, category, dir)

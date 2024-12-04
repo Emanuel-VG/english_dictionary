@@ -1,12 +1,16 @@
 import urllib.request
+import csv
 
 
 class Extraction:
-    def __init__(self, content, dir):
+    def __init__(self, content, dir, word):
         self.content = content
         self.dir = dir
+        # dir = 'data/adjectives/animo'
+        self.url_principal = 'https://dictionary.cambridge.org'
+        self.word = word
 
-    def download_file_with_headers(url, save_path):
+    def download_file(self, url, save_path):
         headers = {
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
             "Accept-Language": "en-US,en;q=0.9",
@@ -34,9 +38,10 @@ class Extraction:
     def find_word(self):
         try:
             word = self.content.find('span', {'class': 'hw dhw'}).get_text()
-            return word
+            self.word = word
+            return self.word
         except:
-            return None
+            return self.word
 
     def pronunciation_uk(self):
         try:
@@ -59,7 +64,9 @@ class Extraction:
         try:
             link_sound = self.content.find(
                 'span', {'class': 'uk dpron-i'}).find('source', {'type': 'audio/mpeg'})['src']
-            return link_sound
+            path = self.dir+'/mp3_uk/'+self.word+'.mp3'
+            self.download_file(self.url_principal+link_sound, path)
+            return path
         except:
             return None
 
@@ -67,7 +74,9 @@ class Extraction:
         try:
             link_sound = self.content.find(
                 'span', {'class': 'uk dpron-i'}).find('source', {'type': 'audio/ogg'})['src']
-            return link_sound
+            path = self.dir+'/ogg_uk/'+self.word+'.ogg'
+            self.download_file(self.url_principal+link_sound, path)
+            return 'ogg_uk/'+self.word+'.ogg'
         except:
             return None
 
@@ -75,7 +84,9 @@ class Extraction:
         try:
             link_sound = self.content.find(
                 'span', {'class': 'us dpron-i'}).find('source', {'type': 'audio/mpeg'})['src']
-            return link_sound
+            path = self.dir+'/mp3_us/'+self.word+'.mp3'
+            self.download_file(self.url_principal+link_sound, path)
+            return 'mp3_us/'+self.word+'.mp3'
         except:
             return None
 
@@ -83,7 +94,9 @@ class Extraction:
         try:
             link_sound = self.content.find(
                 'span', {'class': 'us dpron-i'}).find('source', {'type': 'audio/ogg'})['src']
-            return link_sound
+            path = self.dir+'/ogg_us/'+self.word+'.ogg'
+            self.download_file(self.url_principal+link_sound, path)
+            return 'ogg_us/'+self.word+'.ogg'
         except:
             return None
 
@@ -92,7 +105,9 @@ class Extraction:
             link_image = self.content.find(
                 'div', {'class': 'dimg'}).find('amp-img')['src']
             image = link_image.replace('thumb', 'full')
-            return image
+            path = self.dir+'/image_big/'+self.word+'.jpg'
+            self.download_file(self.url_principal+image, path)
+            return 'image_big/'+self.word+'.jpg'
         except:
             return None
 
@@ -100,19 +115,21 @@ class Extraction:
         try:
             link_image = self.content.find(
                 'div', {'class': 'dimg'}).find('amp-img')['src']
-            return link_image
+            path = self.dir+'/image_small/'+self.word+'.jpg'
+            self.download_file(self.url_principal+link_image, path)
+            return 'image_small/'+self.word+'.jpg'
         except:
             return None
 
-    def list_data(self):
-        data = []
-        data.append(self.find_word())
-        data.append(self.pronunciation_uk())
-        data.append(self.pronunciation_us())
-        data.append(self.mp3_uk())
-        data.append(self.ogg_uk())
-        data.append(self.mp3_us())
-        data.append(self.ogg_us())
-        data.append(self.image_big())
-        data.append(self.image_small())
-        return data
+    def create_data(self):
+        try:
+            # dir = 'data/adjectives/animo'
+            with open(self.dir+'/words.csv', mode='a', encoding='utf-8', newline='') as file_csv:
+                writer = csv.writer(file_csv)
+                # ['sun', 'sʌn', 'sʌn', '/es/media/ingles/uk_pron/u/uks/uksom/uksomet012.mp3', '/es/media/ingles/uk_pron_ogg/u/uks/uksom/uksomet012.ogg', '/es/media/ingles/us_pron/s/son/son__/son.mp3', '/es/media/ingles/us_pron_ogg/s/son/son__/son.ogg', '/es/images/full/sun_noun_001_16945.jpg?version=6.0.39', '/es/images/thumb/sun_noun_001_16945.jpg?version=6.0.39']
+                data_word = [self.find_word(), self.pronunciation_uk(), self.pronunciation_us(), self.mp3_uk(
+                ), self.ogg_uk(), self.mp3_us(), self.ogg_us(), self.image_big(), self.image_small()]
+                writer.writerow(data_word)
+            print(data_word)
+        except Exception as e:
+            print(f"Error to save data: {e}")
