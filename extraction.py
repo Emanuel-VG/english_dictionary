@@ -89,23 +89,25 @@ class Extraction:
         return None
 
     def image_big(self):
-        link_image = self.content.find(
-            'div', {'class': 'dimg'}).find('amp-img')['src']
-        if link_image:
+        try:
+            link_image = self.content.find(
+                'div', {'class': 'dimg'}).find('amp-img')['src']
             image = link_image.replace('thumb', 'full')
             path = self.dir+'/image_big/'+self.word+'.jpg'
             self.download_file(self.url_principal+image, path)
             return 'image_big/'+self.word+'.jpg'
-        return None
+        except:
+            return None
 
     def image_small(self):
-        link_image = self.content.find(
-            'div', {'class': 'dimg'}).find('amp-img')['src']
-        if link_image:
+        try:
+            link_image = self.content.find(
+                'div', {'class': 'dimg'}).find('amp-img')['src']
             path = self.dir+'/image_small/'+self.word+'.jpg'
             self.download_file(self.url_principal+link_image, path)
             return 'image_small/'+self.word+'.jpg'
-        return None
+        except:
+            return None
 
     def examples(self):
         text = ''
