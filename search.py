@@ -37,7 +37,7 @@ def have_page(word, type_word, dir):
         '/es/diccionario/ingles/', '')
     word_url = (re.sub(r'[^a-zA-Z]', '', word_url_alt)).lower()
     if word_url != re.sub(r'[^a-z]', '', word):
-        print(word+": Not Found")
+        print(word+": Not have page")
         return
 
     # unzip the file
@@ -62,3 +62,4 @@ def have_page(word, type_word, dir):
             quote = Extraction(content, dir, word_url_alt)
             quote.create_data()
             return
+    print(word)

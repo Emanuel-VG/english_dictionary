@@ -43,50 +43,58 @@ class Extraction:
             self.word = word.get_text()
 
     def pronunciation_uk(self):
-        pro_uk = self.content.find(
-            'span', {'class': 'uk dpron-i'}).find('span', {'class': 'ipa dipa lpr-2 lpl-1'})
-        return pro_uk.get_text() if pro_uk else None
+        aux = self.content.find('span', {'class': 'uk dpron-i'})
+        if aux:
+            pro_uk = aux.find('span', {'class': 'ipa dipa lpr-2 lpl-1'})
+            return pro_uk.get_text() if pro_uk else None
+        return None
 
     def pronunciation_us(self):
-        pro_us = self.content.find(
-            'span', {'class': 'us dpron-i'}).find('span', {'class': 'ipa dipa lpr-2 lpl-1'})
-        return pro_us.get_text() if pro_us else None
+        aux = self.content.find('span', {'class': 'us dpron-i'})
+        if aux:
+            pro_us = aux.find('span', {'class': 'ipa dipa lpr-2 lpl-1'})
+            return pro_us.get_text() if pro_us else None
+        return None
 
     def mp3_uk(self):
-        link_sound = self.content.find(
-            'span', {'class': 'uk dpron-i'}).find('source', {'type': 'audio/mpeg'})['src']
-        if link_sound:
+        try:
+            link_sound = self.content.find(
+                'span', {'class': 'uk dpron-i'}).find('source', {'type': 'audio/mpeg'})['src']
             path = self.dir+'/mp3_uk/'+self.word+'.mp3'
             self.download_file(self.url_principal+link_sound, path)
             return 'mp3_uk/'+self.word+'.mp3'
-        return None
+        except:
+            return None
 
     def ogg_uk(self):
-        link_sound = self.content.find(
-            'span', {'class': 'uk dpron-i'}).find('source', {'type': 'audio/ogg'})['src']
-        if link_sound:
+        try:
+            link_sound = self.content.find(
+                'span', {'class': 'uk dpron-i'}).find('source', {'type': 'audio/ogg'})['src']
             path = self.dir+'/ogg_uk/'+self.word+'.ogg'
             self.download_file(self.url_principal+link_sound, path)
             return 'ogg_uk/'+self.word+'.ogg'
-        return None
+        except:
+            return None
 
     def mp3_us(self):
-        link_sound = self.content.find(
-            'span', {'class': 'us dpron-i'}).find('source', {'type': 'audio/mpeg'})['src']
-        if link_sound:
+        try:
+            link_sound = self.content.find(
+                'span', {'class': 'us dpron-i'}).find('source', {'type': 'audio/mpeg'})['src']
             path = self.dir+'/mp3_us/'+self.word+'.mp3'
             self.download_file(self.url_principal+link_sound, path)
             return 'mp3_us/'+self.word+'.mp3'
-        return None
+        except:
+            return None
 
     def ogg_us(self):
-        link_sound = self.content.find(
-            'span', {'class': 'us dpron-i'}).find('source', {'type': 'audio/ogg'})['src']
-        if link_sound:
+        try:
+            link_sound = self.content.find(
+                'span', {'class': 'us dpron-i'}).find('source', {'type': 'audio/ogg'})['src']
             path = self.dir+'/ogg_us/'+self.word+'.ogg'
             self.download_file(self.url_principal+link_sound, path)
             return 'ogg_us/'+self.word+'.ogg'
-        return None
+        except:
+            return None
 
     def image_big(self):
         try:
@@ -130,14 +138,11 @@ class Extraction:
         return text[:-1] if text[-1] == '|' else text
 
     def create_data(self):
+        data_word = [self.word, self.pronunciation_uk(), self.pronunciation_us(), self.mp3_uk(), self.ogg_uk(
+        ), self.mp3_us(), self.ogg_us(), self.image_big(), self.image_small(), self.examples()]
         try:
-            # dir = 'data/adjectives/animo'
             with open(self.dir+'/words.csv', mode='a', encoding='utf-8', newline='') as file_csv:
                 writer = csv.writer(file_csv)
-                # ['sun', 'sʌn', 'sʌn', '/es/media/ingles/uk_pron/u/uks/uksom/uksomet012.mp3', '/es/media/ingles/uk_pron_ogg/u/uks/uksom/uksomet012.ogg', '/es/media/ingles/us_pron/s/son/son__/son.mp3', '/es/media/ingles/us_pron_ogg/s/son/son__/son.ogg', '/es/images/full/sun_noun_001_16945.jpg?version=6.0.39', '/es/images/thumb/sun_noun_001_16945.jpg?version=6.0.39']
-                data_word = [self.word, self.pronunciation_uk(), self.pronunciation_us(), self.mp3_uk(
-                ), self.ogg_uk(), self.mp3_us(), self.ogg_us(), self.image_big(), self.image_small(), self.examples()]
                 writer.writerow(data_word)
-            print(data_word)
         except Exception as e:
             print(f"Error to save data: {e}")
