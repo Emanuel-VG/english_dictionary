@@ -1,0 +1,70 @@
+-----------------------------data/verb/irregular_past_simple------------------------------
+bled
+dreamt
+fought
+flew
+forbade
+forgot: Not have page
+forgave
+froze
+got
+gave
+grew
+heard: Not have page
+hid
+knelt
+knew
+leant
+learnt
+lost
+meant
+rode
+rang
+ran
+sewed: Not have page
+showed: Not have page
+slid
+sowed: Not have page
+sped
+spilt
+spoilt
+swelled: Not have page
+took
+tore
+told
+understood
+-----------------------------data/verb/irregular_ed-------------------------------
+arisen
+beaten
+bled
+dreamt
+driven
+eaten
+fallen
+fought
+flown
+forbidden
+forgotten: Not have page
+forgiven: Not have page
+got
+grown
+heard: Not have page
+hidden
+knelt
+known
+leant
+learnt
+lost
+meant
+ridden
+risen
+sewn
+slid
+sown
+sped
+spilt
+spoilt
+torn
+told
+thrown
+understood

@@ -135,7 +135,7 @@ class Extraction:
             for other_example in more_examples:
                 text += ('*'+other_example.get_text())
             text += '|'
-        return text[:-1] if text[-1] == '|' else text
+        return text[:-1].replace('\n', ' ') if text[-1] == '|' else text.replace('\n', ' ')
 
     def create_data(self):
         data_word = [self.word, self.pronunciation_uk(), self.pronunciation_us(), self.mp3_uk(), self.ogg_uk(

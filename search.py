@@ -19,19 +19,18 @@ def have_page(word, type_word, dir):
         "Sec-Fetch-Site": "cross-site",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
     }
-    word = word.strip().replace(' ', '-').replace("'", '-').lower()
     request_params = request.Request(url=url+word, headers=missing_headers)
     try:
         html = request.urlopen(request_params)
     except error.URLError:
-        print('Server Error')
+        print(word, 'Server Error')
         return
     except error.HTTPError:
-        print('Page error')
+        print(word, 'Page error')
         return
     except Exception as inst:
         print(inst)
-        print('Other Error')
+        print(word, 'Other Error')
         return
     word_url_alt = (parse.urlparse(html.geturl()).path).replace(
         '/es/diccionario/ingles/', '')
